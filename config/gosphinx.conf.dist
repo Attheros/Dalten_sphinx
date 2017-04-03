@@ -1,0 +1,50 @@
+#!/bin/bash
+printf "
+source example
+{
+    type                = mysql
+    sql_host            = $SQL_HOST
+    sql_user            = $SQL_USER
+    sql_pass            = $SQL_PASS
+    sql_db              = $SQL_DB
+    sql_port            = $SQL_PORT
+
+    sql_query_pre = SET CHARACTER_SET_RESULTS=utf8
+    sql_query_pre = SET NAMES utf8
+    
+    sql_query        	= SELECT * FROM table
+    sql_field_string 	= fulltext_field
+    sql_attr_string     = something_string
+    sql_attr_uint       = something_int
+    sql_attr_float      = something_float
+}
+
+index index_example
+{
+    source      = example
+    path 		= /var/lib/sphinxsearch/data/example
+    min_prefix_len=1
+    expand_keywords=1
+    charset_table = 0..9, A..Z->a..z, _, a..z, U+0e1, U+0c1, U+10d, U+10c, U+10f, U+10e, U+0e9, U+0c9, U+11b, U+11a, U+0ed, U+0cd, U+148, U+147, U+0f3, U+0d3, U+159, U+158, U+161, U+160, U+165, U+164, U+0fa, U+0da, U+16f, U+16e, U+0fd, U+0dd, U+17e, U+17d,
+}
+
+indexer
+{
+                mem_limit = 256M # defaut=32M
+}
+
+searchd
+{
+
+    listen              = 9306
+    listen              = 9406:mysql41
+    log                 = /var/log/sphinxsearch/searchd.log
+    query_log           = /var/log/sphinxsearch/query.log
+    query_log_format    = sphinxql
+    read_timeout        = 5
+    max_children        = 30
+    dist_threads        = 4
+    pid_file            = /var/run/sphinxsearch/searchd.pid
+    workers             = threads 
+}
+"

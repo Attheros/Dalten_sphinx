@@ -1,0 +1,18 @@
+sphinx:
+  image: dalten/sphinx
+  container_name: sphinx
+  mem_limit: 1024m
+  ports:
+   - 9406:9406
+   - 9306:9306
+   - 9312:9312
+  volumes:
+   - ./config/:/etc/sphinxsearch/
+   - ./sphinx_data:/var/lib/sphinxsearch/data
+   - ./logs/sphinx:/var/log/sphinxsearch
+  environment:
+   #- SQL_HOST=replace_database_host
+   #- SQL_USER=replace_database_username
+   #- SQL_PASS=replace_database_password 
+   #- SQL_DB=replace_database_name
+   #- SQL_PORT=replace_database_port (default 3306)
